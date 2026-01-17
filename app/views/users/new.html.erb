@@ -1,0 +1,40 @@
+<h1>Sign Up</h1>
+
+<%= form_with(model: @user, local: true) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> proibiu este usuário de ser salvo:</h2>
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :email %><br>
+    <%= f.email_field :email %>
+  </div>
+
+  <div>
+    <%= f.label :password %><br>
+    <%= f.password_field :password %>
+  </div>
+
+  <div>
+    <%= f.label :password_confirmation %><br>
+    <%= f.password_field :password_confirmation %>
+  </div>
+
+  <div>
+    <%= f.submit "Sign Up" %>
+  </div>
+<% end %>
+
+<%= link_to "Back to login", new_session_path %>
