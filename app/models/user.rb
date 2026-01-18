@@ -10,6 +10,12 @@ class User < ApplicationRecord
   #Callback para garantir que o email seja salvo em letras minúsculas
   before_save { self.email = email.downcase }
 
- 
- 
+  #Callback para enviar email de boas-vindas após a criação do usuário
+  after_create :send_welcome_email
+
+  private
+
+  def send_welcome_email
+    UserMailer.welcome_email(self).deliver_later
+  end
 end
