@@ -1,21 +1,50 @@
-<h1>My Lists</h1>
+<div style="padding: 30px 20px;">
+  
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+    <h1 style="font-size: 32px; font-weight: bold; color: #ffffff; margin: 0;">Minhas Listas</h1>
+  </div>
 
-<!-- Link para criar uma nova lista -->
-<%= link_to "Create New List", new_list_path, class: "btn btn-primary" %>
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px; overflow-x: auto;">
+    <% @lists.each do |list| %>
+      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; flex-direction: column; height: fit-content;">
+        
+        
+        <div style="padding: 20px; border-bottom: 2px solid rgba(255,255,255,0.1);">
+          <h2 style="font-size: 20px; font-weight: bold; color: white; margin: 0 0 10px 0;"><%= list.title %></h2>
+          <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 14px;">
+            <%= list.tasks.count %> <%= list.tasks.count == 1 ? 'tarefa' : 'tarefas' %>
+          </p>
+        </div>
 
-<hr>
+        <div style="padding: 15px; flex: 1; overflow-y: auto; max-height: 400px;">
+          <% if list.tasks.any? %>
+            <% list.tasks.each do |task| %>
+              <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                  <p style="margin: 0; color: #1f2937; flex: 1;">
+                    <span style="<%= task.done ? 'text-decoration: line-through; color: #9ca3af;' : '' %>"><%= task.title %></span>
+                    <% if task.done %>
+                      <span style="color: #10b981; margin-left: 8px;">✓</span>
+                    <% end %>
+                  </p>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <p style="color: rgba(255,255,255,0.6); text-align: center; padding: 20px; font-style: italic;">Nenhuma tarefa</p>
+          <% end %>
+        </div>
 
-<!-- Lista de listas do usuário -->
-<ul>
-  <% @lists.each do |list| %>
-    <li>
-      <!-- Link para ir para a página da lista (show) -->
-      <%= link_to list.title, list_path(list), class: "list-title" %>
+        <div style="padding: 15px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 8px; justify-content: space-between;">
+          <%= link_to "📋 Tarefas", list_tasks_path(list), style: "background: rgba(255,255,255,0.2); color: white; padding: 10px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600; flex: 1; text-align: center; transition: all 0.2s;" %>
+          <%= link_to "✏️ Editar", edit_list_path(list), style: "background: rgba(255,255,255,0.2); color: white; padding: 10px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600; flex: 1; text-align: center; transition: all 0.2s;" %>
+          <%= button_to "🗑️ Deletar", list_path(list), method: :delete, form: { data: { turbo_confirm: "Tem certeza que quer deletar esta lista?" } }, style: "background: rgba(239,68,68,0.6); color: white; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: 600; flex: 1; transition: all 0.2s; border: none; cursor: pointer;" %>
+        </div>
+      </div>
+    <% end %>
 
-      <!-- Links de ação -->
-      (<%= link_to "Edit", edit_list_path(list) %> |
-       <%= button_to "Delete", list_path(list), method: :delete, data: { confirm: "Are you sure?" } %>)
-
-    </li>
-  <% end %>
-</ul>
+    <div style="background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.3); border-radius: 12px; padding: 30px; display: flex; align-items: center; justify-content: center; min-height: 200px;">
+      <%= link_to "➕ Adicionar Lista", new_list_path, style: "color: white; font-size: 18px; font-weight: 600; text-decoration: none; text-align: center; display: block; width: 100%;" %>
+    </div>
+  </div>
+</div>

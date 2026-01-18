@@ -1,40 +1,47 @@
-<h1>Sign Up</h1>
+<div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
+  <div style="width: 100%; max-width: 450px; background: white; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); padding: 40px;">
 
-<%= form_with(model: @user, local: true) do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> proibiu este usuário de ser salvo:</h2>
-      <ul>
-        <% @user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
 
-  <div>
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <h2 style="font-size: 28px; font-weight: bold; margin-bottom: 30px; text-align: center; color: #1f2937;">Criar Conta</h2>
+
+    <%= form_with model: @user, class: "space-y-4" do |f| %>
+      
+      <% if @user.errors.any? %>
+        <div style="background-color: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+          <p style="font-weight: 600; margin-bottom: 10px;">Erros encontrados:</p>
+          <ul style="margin-left: 20px;">
+            <% @user.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;">Nome</label>
+        <%= f.text_field :name, placeholder: "Seu nome completo", style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px; box-sizing: border-box;" %>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;">Email</label>
+        <%= f.email_field :email, placeholder: "seu@email.com", style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px; box-sizing: border-box;" %>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;">Senha</label>
+        <%= f.password_field :password, placeholder: "Digite sua senha", style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px;" %>
+      </div>
+
+      <div style="margin-bottom: 30px;">
+        <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;">Confirmar Senha</label>
+        <%= f.password_field :password_confirmation, placeholder: "Confirme sua senha", style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px;" %>
+      </div>
+
+      <%= f.submit "Registrar", style: "width: 100%; background-color: #2563eb; color: white; font-weight: bold; padding: 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 16px; transition: background-color 0.2s;" %>
+    <% end %>
+
+    <p style="text-align: center; color: #6b7280; margin-top: 25px;">
+      Já tem conta? <%= link_to "Entrar aqui", new_session_path, style: "color: #2563eb; font-weight: 600; text-decoration: none;" %>
+    </p>
   </div>
-
-  <div>
-    <%= f.label :email %><br>
-    <%= f.email_field :email %>
-  </div>
-
-  <div>
-    <%= f.label :password %><br>
-    <%= f.password_field :password %>
-  </div>
-
-  <div>
-    <%= f.label :password_confirmation %><br>
-    <%= f.password_field :password_confirmation %>
-  </div>
-
-  <div>
-    <%= f.submit "Sign Up" %>
-  </div>
-<% end %>
-
-<%= link_to "Back to login", new_session_path %>
+</div>

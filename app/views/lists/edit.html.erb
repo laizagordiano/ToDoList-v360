@@ -1,5 +1,16 @@
-<h1>Edit List</h1>
+<div style="min-height: 100vh; padding: 40px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <div style="max-width: 600px; margin: 0 auto;">
+    
+    <!-- Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 15px; flex-wrap: wrap;">
+      <h1 style="font-size: 36px; font-weight: bold; color: white; margin: 0;">Editar Lista</h1>
+      <%= link_to "← Voltar", lists_path, style: "background: rgba(255,255,255,0.2); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; white-space: nowrap; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);" %>
+    </div>
 
-<%= render "form" %>
+    <!-- Form Card -->
+    <div style="background: rgba(255,255,255,0.95); padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+      <%= render "form" %>
+    </div>
 
-<%= link_to "Back", lists_path %>
+  </div>
+</div>

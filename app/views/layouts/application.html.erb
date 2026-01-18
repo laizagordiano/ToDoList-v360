@@ -1,42 +1,140 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR" style="background-image: linear-gradient(115deg, #9F7AEA, #FEE2FE); min-height: 100vh;">
   <head>
-    <title><%= content_for(:title) || "To Do List V360" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="To Do List V360">
-    <meta name="mobile-web-app-capable" content="yes">
+    <meta charset="utf-8">
+    <title><%= content_for?(:title) ? yield(:title) : "ToDo App" %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
 
-    <%= yield :head %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
   </head>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
 
-  <body>
-  <header>
-    <% if current_user %>
-      Logged in as <%= current_user.email %> |
-      <%= button_to "Logout", session_path, method: :delete %>
-    <% else %>
-      <%= link_to "Login", new_session_path %> |
-      <%= link_to "Sign Up", new_user_path %>
+  <body class="min-h-screen text-gray-800" style="margin: 0; padding: 0; font-family: 'Lora', serif;">
+
+    <nav style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3); position: relative;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <%= link_to root_path, style: "text-decoration: none; display: flex; align-items: center; gap: 10px;" do %>
+          <span style="font-size: 28px;">✨</span>
+          <span style="color: white; font-size: 26px; font-weight: bold; letter-spacing: -0.5px;">TaskPoint</span>
+        <% end %>
+      </div>
+
+      <!-- Menu de Perfil -->
+      <div style="position: relative;">
+        <% if current_user %>
+          <button onclick="toggleDropdown()" style="background: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.3); padding: 10px 18px; border-radius: 10px; cursor: pointer; font-size: 15px; display: flex; align-items: center; gap: 10px; font-weight: 600; backdrop-filter: blur(10px); transition: all 0.3s;">
+            <span style="background: white; color: #667eea; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: bold;">
+              <%= current_user.name[0].upcase %>
+            </span>
+            <span><%= current_user.name %></span>
+            <span style="font-size: 12px;">▼</span>
+          </button>
+          
+          <!-- Dropdown Menu -->
+          <div id="profileDropdown" style="display: none; position: absolute; right: 0; top: 55px; background: white; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow: hidden; min-width: 220px; z-index: 1000; animation: fadeIn 0.2s ease-out;">
+            <div style="padding: 16px; border-bottom: 1px solid #e5e7eb; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);">
+              <p style="margin: 0 0 4px 0; color: #1f2937; font-weight: 600; font-size: 15px;"><%= current_user.name || current_user.email.split('@').first %></p>
+              <p style="margin: 0; color: #6b7280; font-size: 13px;"><%= current_user.email %></p>
+            </div>
+            <%= button_to session_path, method: :delete, style: "width: 100%; text-align: left; background: none; border: none; padding: 14px 16px; cursor: pointer; color: #ef4444; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: background-color 0.2s;" do %>
+              <span>🚪</span>
+              <span>Sair</span>
+            <% end %>
+          </div>
+        <% else %>
+          <div style="display: flex; gap: 12px;">
+            <%= link_to "Entrar", new_session_path, style: "background: rgba(255,255,255,0.15); color: white; padding: 10px 22px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: all 0.3s; backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3);" %>
+            <%= link_to "Criar Conta", new_user_path, style: "background: white; color: #667eea; padding: 10px 22px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: all 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" %>
+          </div>
+        <% end %>
+      </div>
+    </nav>
+
+    <!-- Flash Messages com Animação -->
+    <% if notice %>
+      <div id="notice-message" style="background-color: #dcfce7; color: #166534; padding: 16px 24px; text-align: center; font-weight: 600; border-bottom: 2px solid #10b981; animation: slideDown 0.3s ease-out;">
+        ✅ <%= notice %>
+      </div>
     <% end %>
-  </header>
 
-  <%= yield %>
+    <% if alert %>
+      <div id="alert-message" style="background-color: #fee2e2; color: #991b1b; padding: 16px 24px; text-align: center; font-weight: 600; border-bottom: 2px solid #ef4444; animation: slideDown 0.3s ease-out;">
+        ❌ <%= alert %>
+      </div>
+    <% end %>
 
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
+    <%= yield %>
+
+    <!-- Script para toggle do dropdown e flash messages -->
+    <style>
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+      }
+
+      .fade-out {
+        animation: slideUp 0.3s ease-out forwards;
+      }
+    </style>
+
+    <script>
+      function toggleDropdown() {
+        var dropdown = document.getElementById('profileDropdown');
+        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+      }
+
+      // Fechar dropdown ao clicar fora
+      document.addEventListener('click', function(event) {
+        var dropdown = document.getElementById('profileDropdown');
+        var button = event.target.closest('button');
+        if (!button) {
+          dropdown.style.display = 'none';
+        }
+      });
+
+      // Auto-hide flash messages após 3 segundos
+      function hideFlashMessage(elementId, delay = 3000) {
+        const element = document.getElementById(elementId);
+        if (element) {
+          setTimeout(function() {
+            element.classList.add('fade-out');
+            setTimeout(function() {
+              element.remove();
+            }, 300);
+          }, delay);
+        }
+      }
+
+      // Inicializar auto-hide para mensagens
+      document.addEventListener('DOMContentLoaded', function() {
+        hideFlashMessage('notice-message', 3000);
+        hideFlashMessage('alert-message', 3000);
+      });
+    </script>
+
   </body>
 </html>

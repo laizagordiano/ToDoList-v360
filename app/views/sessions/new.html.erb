@@ -1,25 +1,25 @@
-<h1>Login</h1>
+<div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
+  <div style="width: 100%; max-width: 450px; background: white; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); padding: 40px;">
 
-<% if flash[:alert] %>
-  <p style="color: red;"><%= flash[:alert] %></p>
-<% end %>
+    <h2 style="font-size: 28px; font-weight: bold; margin-bottom: 30px; text-align: center; color: #1f2937;">Entrar na Conta</h2>
 
-<%= form_with url: session_path, local: true do |form| %>
-  <div>
-    <%= form.label :email, "Email" %><br>
-    <%= form.email_field :email, required: true %>
+    <%= form_with url: session_path, method: :post do |f| %>
+      
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;">Email</label>
+        <%= f.email_field :email, placeholder: "seu@email.com", style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px;" %>
+      </div>
+
+      <div style="margin-bottom: 30px;">
+        <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;">Senha</label>
+        <%= f.password_field :password, placeholder: "Digite sua senha", style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px;" %>
+      </div>
+
+      <%= f.submit "Entrar", style: "width: 100%; background-color: #2563eb; color: white; font-weight: bold; padding: 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 16px; transition: background-color 0.2s;" %>
+    <% end %>
+
+    <p style="text-align: center; color: #6b7280; margin-top: 25px;">
+      Não tem conta? <%= link_to "Registrar", new_user_path, style: "color: #2563eb; font-weight: 600; text-decoration: none;" %>
+    </p>
   </div>
-
-  <div>
-    <%= form.label :password, "Password" %><br>
-    <%= form.password_field :password, required: true %>
-  </div>
-
-  <div>
-    <%= form.submit "Log in" %>
-  </div>
-<% end %>
-
-<p>
-  <%= link_to "Sign up", new_user_path %> if you don't have an account.
-</p>
+</div>

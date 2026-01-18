@@ -1,27 +1,101 @@
-<h1>Tasks for <%= @list.title %></h1>
+<div style="min-height: 100vh; padding: 40px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <div style="max-width: 900px; margin: 0 auto;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px;">
+      <div>
+        <h1 style="font-size: 36px; font-weight: bold; color: white; margin: 0;">📋 <%= @list.title %></h1>
+        <p style="color: rgba(255,255,255,0.8); margin: 8px 0 0 0; font-size: 15px;">
+          <strong><%= @tasks.count %></strong> tarefas · 
+          <strong><%= @tasks.where(done: true).count %></strong> concluídas
+        </p>
+      </div>
+      <%= link_to "← Voltar", lists_path, style: "background: rgba(255,255,255,0.2); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; white-space: nowrap; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);" %>
+    </div>
 
-<%= link_to "New Task", new_list_task_path(@list), class: "btn" %>
+    <div style="background: rgba(255,255,255,0.95); padding: 24px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+      <h3 style="color: #667eea; margin: 0 0 16px 0; font-size: 16px; font-weight: 600;">✨ Adicionar Nova Tarefa</h3>
+      <%= form_with(model: [@list, Task.new], local: true, id: "task-form-index") do |f| %>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+          <%= f.text_field :title, placeholder: "Digite o título da tarefa...", required: true, style: "flex: 1; min-width: 200px; border: 2px solid #e5e7eb; padding: 12px 16px; border-radius: 8px; font-size: 15px; outline: none; background: white; color: #1f2937; transition: all 0.2s;", id: "task-title-input-index" %>
+          <%= f.submit "➕ Adicionar", style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 28px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; transition: all 0.3s; white-space: nowrap; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);", id: "task-submit-btn-index" %>
+        </div>
+      <% end %>
+    </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Done?</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @tasks.each do |task| %>
-      <tr>
-        <td><%= task.title %></td>
-        <td><%= task.done ? "Yes" : "No" %></td>
-        <td>
-          <%= link_to "Edit", edit_list_task_path(@list, task) %> |
-          <%= button_to "Delete", list_task_path(@list, task), method: :delete, data: { confirm: "Are you sure?" } %>
-        </td>
-      </tr>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const taskForm = document.getElementById('task-form-index');
+        const taskInput = document.getElementById('task-title-input-index');
+
+        if (taskForm && taskInput) {
+          taskForm.addEventListener('submit', function(e) {
+            const titleValue = taskInput.value.trim();
+            
+            if (!titleValue || titleValue === '') {
+              e.preventDefault();
+              e.stopPropagation();
+              taskInput.style.borderColor = '#ef4444';
+              taskInput.focus();
+              return false;
+            }
+            
+            taskInput.style.borderColor = '#10b981';
+          });
+
+          taskInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+              this.style.borderColor = '#e5e7eb';
+            }
+          });
+
+          taskInput.addEventListener('invalid', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#ef4444';
+            this.focus();
+          });
+        }
+      });
+    </script>
+
+    <% if @tasks.any? %>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <h3 style="color: white; margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">📌 Suas Tarefas</h3>
+        
+        <% @tasks.each do |task| %>
+          <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; border-left: 5px solid <%= task.done ? '#10b981' : '#f59e0b' %>; transition: all 0.3s;">
+            
+            <div style="flex-shrink: 0;">
+              <%= form_with(model: [@list, task], local: true, method: :patch) do |f| %>
+                <%= f.check_box :done, { style: "width: 22px; height: 22px; cursor: pointer; accent-color: #667eea;", onchange: "this.form.submit();" }, "true", "false" %>
+              <% end %>
+            </div>
+
+            <div style="flex: 1; min-width: 150px;">
+              <p style="margin: 0; font-size: 16px; font-weight: 500; <%= task.done ? 'text-decoration: line-through; color: #9ca3af;' : 'color: #1f2937;' %>">
+                <%= task.title %>
+              </p>
+            </div>
+
+            <div style="flex-shrink: 0;">
+              <span style="padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; <%= task.done ? 'background-color: #d1fae5; color: #065f46;' : 'background-color: #fef3c7; color: #92400e;' %>">
+                <%= task.done ? '✓ Concluída' : '⏳ Pendente' %>
+              </span>
+            </div>
+
+            <div style="display: flex; gap: 10px; flex-shrink: 0;">
+              <%= link_to "✏️", edit_list_task_path(@list, task), style: "background: #3b82f6; color: white; padding: 10px 12px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; min-width: 40px;" %>
+              <%= button_to "🗑️", list_task_path(@list, task), method: :delete, form: { data: { turbo_confirm: "Deletar esta tarefa?" } }, style: "background: #ef4444; color: white; padding: 10px 12px; border-radius: 6px; border: none; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.2s; min-width: 40px;" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div style="text-align: center; padding: 80px 30px; background: rgba(255,255,255,0.95); border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        <p style="font-size: 40px; margin: 0 0 15px 0;">📭</p>
+        <p style="font-size: 18px; color: #6b7280; margin: 0; font-weight: 500;">Nenhuma tarefa ainda</p>
+        <p style="font-size: 14px; color: #9ca3af; margin: 8px 0 0 0;">Adicione uma nova tarefa acima para começar!</p>
+      </div>
     <% end %>
-  </tbody>
-</table>
 
-<%= link_to "Back to Lists", lists_path %>
+  </div>
+</div>

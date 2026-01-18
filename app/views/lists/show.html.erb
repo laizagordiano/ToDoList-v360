@@ -1,25 +1,81 @@
-<h1><%= @list.title %></h1>
-<p><%= @list.description %></p>
+<div style="min-height: 100vh; padding: 40px 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+  <div style="max-width: 900px; margin: 0 auto;">
+    
+    <!-- Header -->
+    <div style="background: rgba(255,255,255,0.95); padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+        <div style="flex: 1; min-width: 200px;">
+          <h1 style="font-size: 36px; font-weight: bold; color: #1f2937; margin: 0 0 10px 0;">📋 <%= @list.title %></h1>
+          <p style="color: #6b7280; margin: 0; font-size: 15px;">
+            <strong><%= @list.tasks.count %></strong> tarefas · 
+            <strong><%= @list.tasks.where(done: true).count %></strong> concluídas
+          </p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <%= link_to "✏️ Editar", edit_list_path(@list), style: "background: #3b82f6; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s; display: inline-block;" %>
+          <%= link_to "← Voltar", lists_path, style: "background: #6b7280; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s; display: inline-block;" %>
+        </div>
+      </div>
 
-<hr>
-
-<h2>Tasks</h2>
-
-<!-- Link para criar nova tarefa -->
-<%= link_to "Add Task", new_list_task_path(@list), class: "btn btn-success" %>
-
-<ul>
-  <% @list.tasks.each do |task| %>
-    <li>
-      <%= task.title %> 
-      <% if task.done %>
-        (Done)
+      <!-- Descrição -->
+      <% if @list.description.present? %>
+        <div style="background-color: #f3f4f6; padding: 16px; border-radius: 8px; border-left: 4px solid #667eea;">
+          <p style="color: #374151; margin: 0; line-height: 1.6;">
+            <strong style="color: #667eea;">📝 Descrição:</strong> <%= @list.description %>
+          </p>
+        </div>
       <% end %>
-      | <%= link_to "Edit", edit_list_task_path(@list, task) %>
-      | <%= link_to "Delete", list_task_path(@list, task), method: :delete, data: { confirm: "Are you sure?" } %>
-    </li>
-  <% end %>
-</ul>
+    </div>
 
-<!-- Link para voltar à lista de listas -->
-<%= link_to "Back to Lists", lists_path, class: "btn btn-secondary" %>
+    <!-- Seção de Tarefas -->
+    <div style="background: rgba(255,255,255,0.95); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+      <h2 style="color: #667eea; margin: 0 0 24px 0; font-size: 20px; font-weight: 600;">📌 Tarefas (<%= @list.tasks.count %>)</h2>
+
+      <% if @list.tasks.any? %>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <% @list.tasks.each do |task| %>
+            <div style="background: #f9fafb; padding: 16px; border-radius: 8px; border-left: 4px solid <%= task.done ? '#10b981' : '#f59e0b' %>; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; transition: all 0.2s;">
+              
+              <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 200px;">
+                <!-- Checkbox -->
+                <div>
+                  <%= form_with(model: [@list, task], local: true, method: :patch) do |f| %>
+                    <%= f.check_box :done, { style: "width: 22px; height: 22px; cursor: pointer; accent-color: #667eea;", onchange: "this.form.submit();" }, "true", "false" %>
+                  <% end %>
+                </div>
+
+                <!-- Título -->
+                <div>
+                  <p style="margin: 0; font-size: 15px; font-weight: 500; <%= task.done ? 'text-decoration: line-through; color: #9ca3af;' : 'color: #1f2937;' %>">
+                    <%= task.title %>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Status -->
+              <div style="flex-shrink: 0;">
+                <span style="padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; <%= task.done ? 'background-color: #d1fae5; color: #065f46;' : 'background-color: #fef3c7; color: #92400e;' %>">
+                  <%= task.done ? '✓ Concluída' : '⏳ Pendente' %>
+                </span>
+              </div>
+
+              <!-- Ações -->
+              <div style="display: flex; gap: 8px; flex-shrink: 0;">
+                <%= link_to "✏️", edit_list_task_path(@list, task), style: "background: #3b82f6; color: white; padding: 8px 12px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 13px; transition: all 0.2s; display: inline-block;" %>
+                <%= button_to "🗑️", list_task_path(@list, task), method: :delete, form: { data: { turbo_confirm: "Deletar?" } }, style: "background: #ef4444; color: white; padding: 8px 12px; border-radius: 6px; border: none; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s;" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div style="text-align: center; padding: 40px 20px; background: #f3f4f6; border-radius: 8px;">
+          <p style="font-size: 18px; color: #6b7280; margin: 0; font-weight: 500;">📭 Nenhuma tarefa nesta lista</p>
+          <p style="font-size: 14px; color: #9ca3af; margin: 8px 0 0 0;">
+            <%= link_to "Clique aqui para criar uma", new_list_task_path(@list), style: "color: #667eea; text-decoration: none; font-weight: 600;" %>
+          </p>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>

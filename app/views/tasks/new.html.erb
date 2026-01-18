@@ -1,2 +1,12 @@
-<h1>New Task for <%= @list.title %></h1>
-<%= render "form", list: @list, task: @task %>
+<div style="padding: 30px 20px; max-width: 600px; margin: 0 auto;">
+  <div style="background: white; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); padding: 40px; margin-bottom: 20px;">
+    <h1 style="font-size: 28px; font-weight: bold; color: #1f2937; margin: 0 0 5px 0;">➕ Nova Tarefa</h1>
+    <p style="color: #6b7280; margin: 0 0 30px 0;">Lista: <strong><%= @list.title %></strong></p>
+    
+    <%= render "form", list: @list, task: @task %>
+  </div>
+
+  <div style="text-align: center;">
+    <%= link_to "← Voltar para a lista", @list, style: "color: #2563eb; text-decoration: none; font-weight: 600; font-size: 14px;" %>
+  </div>
+</div>
