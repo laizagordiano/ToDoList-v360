@@ -19,12 +19,9 @@
   <body class="min-h-screen text-gray-800" style="margin: 0; padding: 0; font-family: 'Lora', serif;">
 
     <nav style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 18px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3); position: relative;">
-      <div style="display: flex; align-items: center; gap: 10px;">
-        <%= link_to root_path, style: "text-decoration: none; display: flex; align-items: center; gap: 10px;" do %>
-          <span style="font-size: 28px;">✨</span>
-          <span style="color: white; font-size: 26px; font-weight: bold; letter-spacing: -0.5px;">TaskPoint</span>
-        <% end %>
-      </div>
+      <%= link_to root_path, style: "text-decoration: none;" do %>
+        <%= image_tag "TaskPointLogo.svg", alt: "TaskPoint", style: "height: 50px; width: auto;" %>
+      <% end %>
 
       <!-- Menu de Perfil -->
       <div style="position: relative;">
