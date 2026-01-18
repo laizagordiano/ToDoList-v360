@@ -52,6 +52,6 @@ class ListsController < ApplicationController
   private
   def list_params
     #Permite apenas os parâmetros necessários para a lista
-    params.require(:list).permit(:title)
+    params.require(:list).permit(:title, :description)
   end
 end
