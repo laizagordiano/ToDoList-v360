@@ -17,9 +17,8 @@ test:
   database: <%= ENV["DATABASE_NAME_TEST"] || "to_do_list_v360_test" %>
 
 production:
-  primary: &primary_production
-    <<: *default
-    database: <%= ENV["DATABASE_NAME_PROD"] || "to_do_list_v360_production" %>
+  url: <%= ENV['DATABASE_URL'] %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
   cache:
     <<: *primary_production
