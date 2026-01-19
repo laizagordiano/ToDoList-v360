@@ -1,11 +1,19 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
-  title: MyString
-  completed: false
   list: one
+  title: Task One
+  done: false
 
 two:
-  title: MyString
-  completed: false
+  list: one
+  title: Task Two
+  done: true
+
+three:
   list: two
+  title: Task Three
+  done: false
+
+four:
+  list: two
+  title: Task Four
+  done: true
