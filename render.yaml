@@ -2,6 +2,7 @@ services:
   - type: web
     name: taskpoint
     env: ruby
+    runtime: ruby-3.3.2
     buildCommand: "./bin/render-build.sh"
     startCommand: "bundle exec puma -C config/puma.rb"
     envVars:
