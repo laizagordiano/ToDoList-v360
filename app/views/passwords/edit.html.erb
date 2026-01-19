@@ -1,0 +1,26 @@
+<div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
+  <div style="width: 100%; max-width: 450px; background: white; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); padding: 40px;">
+
+    <h2 style="font-size: 28px; font-weight: bold; margin-bottom: 30px; text-align: center; color: #1f2937;">Definir Nova Senha</h2>
+
+    <%= form_with url: password_path(params[:token]), method: :patch do |f| %>
+      
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;">Nova Senha</label>
+        <%= f.password_field :password, placeholder: "Digite uma nova senha", style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px;", required: true %>
+      </div>
+
+      <div style="margin-bottom: 30px;">
+        <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;">Confirmar Senha</label>
+        <%= f.password_field :password_confirmation, placeholder: "Confirme a nova senha", style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px;", required: true %>
+      </div>
+
+      <%= f.submit "Atualizar Senha", style: "width: 100%; background-color: #2563eb; color: white; font-weight: bold; padding: 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 16px; transition: background-color 0.2s;" %>
+    <% end %>
+
+    <p style="text-align: center; color: #6b7280; margin-top: 25px;">
+      <%= link_to "Voltar ao Login", new_session_path, style: "color: #2563eb; font-weight: 600; text-decoration: none;" %>
+    </p>
+
+  </div>
+</div>
