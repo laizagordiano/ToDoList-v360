@@ -62,7 +62,9 @@ Rails.application.configure do
     user_name: ENV["GMAIL_EMAIL"],
     password: ENV["GMAIL_PASSWORD"],
     authentication: :plain,
-    enable_starttls_auto: true
+    enable_starttls_auto: true,
+    open_timeout: 15,
+    read_timeout: 15
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to

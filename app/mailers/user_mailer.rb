@@ -1,5 +1,6 @@
 class UserMailer < ApplicationMailer
-  default from: 'noreply@taskpoint.com'
+  # Use the authenticated Gmail as sender to avoid spoofing issues
+  default from: ENV.fetch("GMAIL_EMAIL", "noreply@taskpoint.com")
 
   def welcome_email(user)
     @user = user
