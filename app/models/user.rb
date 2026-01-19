@@ -13,6 +13,18 @@ class User < ApplicationRecord
   #Callback para enviar email de boas-vindas após a criação do usuário
   after_create :send_welcome_email
 
+   # Gera token para reset de senha
+  def generate_password_reset_token!
+    self.reset_password_token = SecureRandom.urlsafe_base64
+    self.reset_password_sent_at = Time.current
+    save!
+  end
+
+  # Verifica se o token ainda é válido (exemplo: 2 horas)
+  def password_reset_token_valid?
+    reset_password_sent_at && reset_password_sent_at > 2.hours.ago
+  end
+  
   private
 
   def send_welcome_email

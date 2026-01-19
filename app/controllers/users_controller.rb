@@ -7,11 +7,21 @@ class UsersController < ApplicationController
   # POST /users
   def create
     @user = User.new(user_params)
+    
     if @user.save
-      redirect_to new_session_path, notice: "User created successfully. Please log in."
+      # Email enviado após salvar com sucesso
+      UserMailer.welcome_email(@user).deliver_later
+      
+      respond_to do |format|
+        format.html { redirect_to new_session_path, notice: "Usuário criado com sucesso. Faça login." }
+        format.json { render json: { message: "Usuário criado com sucesso" }, status: :created }
+      end
     else
       # Se houver erros, renderiza o formulário novamente
-      render :new, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity }
+      end
     end
   end
 
