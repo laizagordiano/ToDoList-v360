@@ -52,20 +52,10 @@ Rails.application.configure do
   # Replace the default in-process and non-durable queuing backend for Active Job.
   # config.active_job.queue_adapter = :resque
 
-  # Mailer config for production (Gmail with app password set in env vars).
+  # Mailer config for production (emails sent via Brevo API from UserMailer).
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.default_url_options = { host: ENV.fetch("APP_HOST", "example.com"), protocol: "https" }
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: 587,
-    user_name: ENV["GMAIL_EMAIL"],
-    password: ENV["GMAIL_PASSWORD"],
-    authentication: :plain,
-    enable_starttls_auto: true,
-    open_timeout: 15,
-    read_timeout: 15
-  }
+  config.action_mailer.delivery_method = :test
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
