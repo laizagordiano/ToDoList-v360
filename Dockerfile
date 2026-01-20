@@ -56,6 +56,9 @@ RUN groupadd --system --gid 1000 rails && \
 COPY --chown=rails:rails --from=build /usr/local/bundle /usr/local/bundle
 COPY --chown=rails:rails --from=build /rails /rails
 
+# Garante permissões de execução dos scripts
+RUN chmod +x /rails/bin/docker-entrypoint /rails/bin/thrust /rails/bin/rails
+
 # Define usuário não-root
 USER rails:rails
 WORKDIR /rails
