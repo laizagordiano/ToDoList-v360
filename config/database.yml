@@ -19,6 +19,7 @@ test:
 production:
   primary: &primary_production
     <<: *default
+    url : <%= ENV["DATABASE_URL"] %>
     database: <%= ENV["DATABASE_NAME_PROD"] || "to_do_list_v360_production" %>
 
   cache:
