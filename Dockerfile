@@ -57,7 +57,7 @@ COPY --chown=rails:rails --from=build /usr/local/bundle /usr/local/bundle
 COPY --chown=rails:rails --from=build /rails /rails
 
 # Garante permissões de execução dos scripts (antes de trocar usuário)
-RUN chmod +x /rails/bin/docker-entrypoint /rails/bin/thrust /rails/bin/rails /rails/bin/puma
+RUN chmod +x /rails/bin/docker-entrypoint /rails/bin/thrust /rails/bin/rails
 
 # Define usuário não-root
 USER rails:rails
