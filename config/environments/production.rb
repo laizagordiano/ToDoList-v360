@@ -15,8 +15,9 @@ Rails.application.configure do
   config.silence_healthcheck_path = "/up"
   config.active_support.report_deprecations = false
 
-  # Active Job config: processa jobs imediatamente (inline) no Render Free
-  config.active_job.queue_adapter = :inline
+  # Active Job config
+  # No Railway você vai usar :solid_queue para processar jobs em background
+  config.active_job.queue_adapter = :solid_queue
 
   # Mailer config: usando Postmark em produção
   config.action_mailer.raise_delivery_errors = true
