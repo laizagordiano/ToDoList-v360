@@ -50,8 +50,8 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
-  config.active_job.queue_adapter = :solid_queue
-  config.solid_queue.connects_to = { database: { writing: :primary, reading: :primary } }
+  # On Render, use inline to process jobs immediately (no background workers)
+  config.active_job.queue_adapter = :inline
 
   # Mailer config for production (Gmail with app password set in env vars).
   config.action_mailer.raise_delivery_errors = true
