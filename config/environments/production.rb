@@ -89,7 +89,11 @@ Rails.application.configure do
   
   # URL padrão para links em e-mails (necessário para render_to_string)
   config.action_mailer.default_url_options = { host: ENV.fetch('APP_HOST', 'example.com') }
+  
+  # Desabilita entrega de emails via ActionMailer (usamos BrevoService via HTTP)
+  config.action_mailer.delivery_method = :test
+  config.action_mailer.perform_deliveries = false
 
-  # Nota: E-mails são enviados via PostmarkService usando API HTTP direta
+  # Nota: E-mails são enviados via BrevoService usando API HTTP direta
   # Não usamos ActionMailer delivery_method, SMTP, ActiveJob ou deliver_later
 end

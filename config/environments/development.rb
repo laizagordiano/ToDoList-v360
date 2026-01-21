@@ -37,7 +37,7 @@ Rails.application.configure do
   # URL padrão para links em e-mails (necessário para render_to_string)
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
-  # Nota: Em desenvolvimento, e-mails podem ser enviados via PostmarkService
+  # Nota: Em desenvolvimento, e-mails podem ser enviados via BrevoService
   # ou você pode usar um mock/stub nos testes
   # Não usamos ActionMailer delivery_method, SMTP, ActiveJob ou deliver_later
 

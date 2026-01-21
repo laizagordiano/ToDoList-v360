@@ -1,5 +1,5 @@
 class UserMailer < ApplicationMailer
-  default from: ENV["POSTMARK_SENDER_EMAIL"]
+  default from: ENV["BREVO_SENDER_EMAIL"] || "noreply@example.com"
 
   def welcome_email(user)
     @user = user
