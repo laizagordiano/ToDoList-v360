@@ -86,15 +86,10 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
-  # Envio de e-mails com Postmark
-config.action_mailer.delivery_method = :postmark
+  
+  # URL padrão para links em e-mails (necessário para render_to_string)
+  config.action_mailer.default_url_options = { host: ENV.fetch('APP_HOST', 'example.com') }
 
-config.action_mailer.postmark_settings = {
-  api_token: ENV["POSTMARK_API_TOKEN"]
-}
-
-config.action_mailer.default_options = {
-  from: ENV["POSTMARK_SENDER_EMAIL"]
-}
-
+  # Nota: E-mails são enviados via PostmarkService usando API HTTP direta
+  # Não usamos ActionMailer delivery_method, SMTP, ActiveJob ou deliver_later
 end
