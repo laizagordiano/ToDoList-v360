@@ -9,8 +9,13 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     
     if @user.save
-      # Email enviado após salvar com sucesso
-      UserMailer.welcome_email(@user).deliver_later
+      # Envio síncrono de email de boas-vindas
+      begin
+        UserMailer.welcome_email(@user).deliver_now
+      rescue => e
+        Rails.logger.error("Erro ao enviar email de boas-vindas: #{e.message}")
+        # Continua mesmo se o email falhar, pois o usuário já foi criado
+      end
       
       respond_to do |format|
         format.html { redirect_to new_session_path, notice: "Usuário criado com sucesso. Faça login." }
