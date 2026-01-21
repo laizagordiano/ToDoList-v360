@@ -12,7 +12,7 @@ class UserMailerTest < ActionMailer::TestCase
 
   test "email de boas-vindas tem o assunto correto" do
     mail = UserMailer.welcome_email(@user)
-    assert_equal "Welcome to TaskPoint! 🎉", mail.subject
+    assert_equal "Bem-vindo ao TaskPoint! 🎉", mail.subject
   end
 
   test "email de boas-vindas contém o nome do usuário" do

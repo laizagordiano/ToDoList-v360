@@ -16,7 +16,7 @@ class UserTest < ActiveSupport::TestCase
   test "presença de email" do
     @user.email = nil
     assert_not @user.valid?
-    assert_includes @user.errors[:email], "can't be blank"
+    assert_includes @user.errors[:email], "não pode ficar em branco"
   end
 
   test "formato do email" do
@@ -32,7 +32,7 @@ class UserTest < ActiveSupport::TestCase
     duplicate_user = User.new(email: "unique@example.com", password: "password123", name: "Duplicate")
     
     assert_not duplicate_user.valid?
-    assert_includes duplicate_user.errors[:email], "has already been taken"
+    assert_includes duplicate_user.errors[:email], "já está em uso"
   end
 
   test "unicidade do email não sensível a maiúsculas" do

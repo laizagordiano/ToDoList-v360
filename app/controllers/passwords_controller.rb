@@ -54,7 +54,7 @@ class PasswordsController < ApplicationController
       redirect_to new_session_path
     else
       flash.now[:alert] = t('passwords.update.error')
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
