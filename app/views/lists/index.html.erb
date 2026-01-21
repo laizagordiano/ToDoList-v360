@@ -1,50 +1,151 @@
 <div style="padding: 30px 20px;">
   
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
-    <h1 style="font-size: 32px; font-weight: bold; color: #ffffff; margin: 0;">Minhas Listas</h1>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 20px; flex-wrap: wrap;">
+    <h1 style="font-size: 32px; font-weight: bold; color: #ffffff; margin: 0;"><%= t('lists.index.title') %></h1>
+    
+    <!-- Campo de Busca Compacto -->
+    <%= form_with url: lists_path, method: :get, local: true, style: "display: flex; align-items: center; gap: 8px;" do |f| %>
+      <div style="position: relative; width: 280px;">
+        <%= f.text_field :search, 
+          value: params[:search],
+          placeholder: "🔍 Buscar...",
+          style: "width: 100%; padding: 10px 40px 10px 14px; font-size: 14px; border: 2px solid rgba(255,255,255,0.2); border-radius: 10px; background: rgba(255,255,255,0.95); color: #1f2937; backdrop-filter: blur(10px); transition: all 0.3s; box-shadow: 0 2px 10px rgba(0,0,0,0.1);",
+          onfocus: "this.style.borderColor='#667eea'; this.style.boxShadow='0 2px 15px rgba(102, 126, 234, 0.3)'",
+          onblur: "this.style.borderColor='rgba(255,255,255,0.2)'; this.style.boxShadow='0 2px 10px rgba(0,0,0,0.1)'" %>
+        <button type="submit" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.2s; box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);" onmouseover="this.style.transform='translateY(-50%) scale(1.05)'; this.style.boxShadow='0 2px 10px rgba(102, 126, 234, 0.4)'" onmouseout="this.style.transform='translateY(-50%) scale(1)'; this.style.boxShadow='0 2px 6px rgba(102, 126, 234, 0.3)'">
+          ⚡
+        </button>
+      </div>
+      <% if params[:search].present? %>
+        <%= link_to "✕", lists_path, style: "color: rgba(255,255,255,0.9); text-decoration: none; font-size: 20px; padding: 8px 12px; background: rgba(255,255,255,0.15); border-radius: 8px; transition: all 0.2s; line-height: 1; display: flex; align-items: center; justify-content: center;", onmouseover: "this.style.background='rgba(255,255,255,0.25)'", onmouseout: "this.style.background='rgba(255,255,255,0.15)'" %>
+      <% end %>
+    <% end %>
   </div>
+  
+  <% if params[:search].present? %>
+    <div style="margin-bottom: 20px;">
+      <span style="color: rgba(255,255,255,0.9); font-size: 14px; background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 8px; display: inline-block;">
+        Buscando por: "<strong><%= params[:search] %></strong>"
+      </span>
+    </div>
+  <% end %>
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px; overflow-x: auto;">
+  <% if @lists.any? %>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
     <% @lists.each do |list| %>
-      <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; flex-direction: column; height: fit-content;">
+      <% progress = list_progress(list) %>
+      <div style="background: <%= list_gradient(list) %>; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; flex-direction: column; height: fit-content; transition: all 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 15px 40px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.15)'">
         
-        
-        <div style="padding: 20px; border-bottom: 2px solid rgba(255,255,255,0.1);">
-          <h2 style="font-size: 20px; font-weight: bold; color: white; margin: 0 0 10px 0;"><%= list.title %></h2>
-          <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 14px;">
-            <%= list.tasks.count %> <%= list.tasks.count == 1 ? 'tarefa' : 'tarefas' %>
-          </p>
+        <!-- Header da Lista -->
+        <div style="padding: 24px; border-bottom: 2px solid rgba(255,255,255,0.15);">
+          <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+            <h2 style="font-size: 22px; font-weight: bold; color: white; margin: 0; flex: 1; line-height: 1.3;"><%= list.title %></h2>
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <span style="color: rgba(255,255,255,0.9); font-size: 14px; font-weight: 600;">
+              <%= list.tasks.where(done: true).count %>/<%= list.tasks.count %> <%= t('lists.index.task_count', count: list.tasks.count) %>
+            </span>
+            <span style="color: rgba(255,255,255,0.7); font-size: 14px;">•</span>
+            <span style="color: rgba(255,255,255,0.9); font-size: 14px; font-weight: 600;"><%= progress %>%</span>
+          </div>
+          
+          <!-- Barra de Progresso -->
+          <div style="background: rgba(255,255,255,0.2); border-radius: 10px; height: 8px; overflow: hidden; backdrop-filter: blur(10px);">
+            <div style="background: <%= progress_color(progress) %>; height: 100%; width: <%= progress %>%; transition: width 0.5s ease; border-radius: 10px; box-shadow: 0 0 10px rgba(255,255,255,0.3);"></div>
+          </div>
         </div>
 
-        <div style="padding: 15px; flex: 1; overflow-y: auto; max-height: 400px;">
+        <!-- Preview das Tarefas -->
+        <div id="tasks-container-<%= list.id %>" style="padding: 20px; flex: 1; overflow: hidden; max-height: 280px; transition: max-height 0.4s ease;" onmouseenter="this.style.maxHeight='420px'" onmouseleave="this.style.maxHeight='280px'">
           <% if list.tasks.any? %>
-            <% list.tasks.each do |task| %>
-              <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                <div style="display: flex; justify-content: space-between; align-items: start;">
-                  <p style="margin: 0; color: #1f2937; flex: 1;">
-                    <span style="<%= task.done ? 'text-decoration: line-through; color: #9ca3af;' : '' %>"><%= task.title %></span>
+            <div style="overflow-y: auto; overflow-x: hidden; max-height: 100%;">
+              <% list.tasks.limit(6).each_with_index do |task, index| %>
+                <div class="task-item-<%= list.id %>" style="background: white; padding: 14px; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.2s; <%= index >= 4 ? 'display: none;' : '' %>" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.12)'" onmouseout="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.08)'">
+                  <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+                    <p style="margin: 0; color: #1f2937; flex: 1; font-size: 14px; line-height: 1.5; word-break: break-word; <%= task.done ? 'text-decoration: line-through; color: #9ca3af; opacity: 0.7;' : '' %>">
+                      <%= task.title %>
+                    </p>
                     <% if task.done %>
-                      <span style="color: #10b981; margin-left: 8px;">✓</span>
+                      <span style="color: #10b981; font-size: 18px; flex-shrink: 0;">✓</span>
+                    <% elsif task.due_date %>
+                      <span style="font-size: 11px; color: #6b7280; flex-shrink: 0; white-space: nowrap;"><%= friendly_due_date(task.due_date) %></span>
                     <% end %>
-                  </p>
+                  </div>
                 </div>
-              </div>
+              <% end %>
+            </div>
+            <% if list.tasks.count > 4 && list.tasks.count <= 6 %>
+              <p id="more-tasks-<%= list.id %>" style="text-align: center; color: rgba(255,255,255,0.8); font-size: 13px; margin: 10px 0 0 0; font-weight: 600; transition: opacity 0.3s;">+ <%= [list.tasks.count - 4, 2].min %> tarefa(s) • Passe o mouse para ver</p>
+            <% elsif list.tasks.count > 6 %>
+              <%= link_to list_tasks_path(list), style: "text-align: center; color: rgba(255,255,255,0.9); font-size: 13px; margin: 10px 0 0 0; font-weight: 600; background: rgba(255,255,255,0.15); padding: 10px; border-radius: 8px; display: block; text-decoration: none; transition: all 0.2s;", onmouseover: "this.style.background='rgba(255,255,255,0.25)'", onmouseout: "this.style.background='rgba(255,255,255,0.15)'" do %>
+                Clique para ver todas as tarefas
+              <% end %>
             <% end %>
+            
+            <script>
+              document.getElementById('tasks-container-<%= list.id %>').addEventListener('mouseenter', function() {
+                document.querySelectorAll('.task-item-<%= list.id %>').forEach(function(el) {
+                  el.style.display = 'block';
+                });
+                var moreText = document.getElementById('more-tasks-<%= list.id %>');
+                if (moreText) moreText.style.opacity = '0';
+              });
+              
+              document.getElementById('tasks-container-<%= list.id %>').addEventListener('mouseleave', function() {
+                document.querySelectorAll('.task-item-<%= list.id %>').forEach(function(el, index) {
+                  if (index >= 4) el.style.display = 'none';
+                });
+                var moreText = document.getElementById('more-tasks-<%= list.id %>');
+                if (moreText) moreText.style.opacity = '1';
+              });
+            </script>
           <% else %>
-            <p style="color: rgba(255,255,255,0.6); text-align: center; padding: 20px; font-style: italic;">Nenhuma tarefa</p>
+            <div style="text-align: center; padding: 40px 20px;">
+              <p style="font-size: 48px; margin: 0 0 12px 0; opacity: 0.3;">📝</p>
+              <p style="color: rgba(255,255,255,0.7); font-size: 14px; margin: 0; font-style: italic;">Nenhuma tarefa ainda</p>
+            </div>
           <% end %>
         </div>
 
         <div style="padding: 15px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 8px; justify-content: space-between;">
-          <%= link_to "📋 Tarefas", list_tasks_path(list), style: "background: rgba(255,255,255,0.2); color: white; padding: 10px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600; flex: 1; text-align: center; transition: all 0.2s;" %>
-          <%= link_to "✏️ Editar", edit_list_path(list), style: "background: rgba(255,255,255,0.2); color: white; padding: 10px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 600; flex: 1; text-align: center; transition: all 0.2s;" %>
-          <%= button_to "🗑️ Deletar", list_path(list), method: :delete, form: { data: { turbo_confirm: "Tem certeza que quer deletar esta lista?" } }, style: "background: rgba(239,68,68,0.6); color: white; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: 600; flex: 1; transition: all 0.2s; border: none; cursor: pointer;" %>
+          <%= link_to t('lists.index.tasks_button'), list_tasks_path(list), style: "background: rgba(255,255,255,0.2); color: white; padding: 10px 8px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; flex: 1; text-align: center; transition: all 0.2s; min-width: 0;" %>
+          <%= link_to t('lists.index.edit_button'), edit_list_path(list), style: "background: rgba(255,255,255,0.2); color: white; padding: 10px 8px; border-radius: 6px; text-decoration: none; font-size: 13px; font-weight: 600; flex: 1; text-align: center; transition: all 0.2s; min-width: 0;" %>
+          <%= button_to t('lists.index.delete_button'), list_path(list), method: :delete, form: { data: { turbo_confirm: t('lists.index.delete_confirm') } }, style: "background: rgba(239,68,68,0.6); color: white; padding: 10px 8px; border-radius: 6px; font-size: 13px; font-weight: 600; flex: 1; transition: all 0.2s; border: none; cursor: pointer; min-width: 0;" %>
         </div>
       </div>
     <% end %>
 
-    <div style="background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.3); border-radius: 12px; padding: 30px; display: flex; align-items: center; justify-content: center; min-height: 200px;">
-      <%= link_to "➕ Adicionar Lista", new_list_path, style: "color: white; font-size: 18px; font-weight: 600; text-decoration: none; text-align: center; display: block; width: 100%;" %>
-    </div>
+    <%= link_to new_list_path, style: "text-decoration: none;" do %>
+      <div style="background: rgba(255,255,255,0.1); border: 2px dashed rgba(255,255,255,0.3); border-radius: 16px; padding: 30px; display: flex; align-items: center; justify-content: center; min-height: 200px; cursor: pointer; transition: all 0.3s; backdrop-filter: blur(10px);" onmouseover="this.style.background='rgba(255,255,255,0.15)'; this.style.borderColor='rgba(255,255,255,0.5)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.borderColor='rgba(255,255,255,0.3)'">
+        <span style="color: white; font-size: 18px; font-weight: 600; text-align: center; display: block; width: 100%;"><%= t('lists.index.add_list') %></span>
+      </div>
+    <% end %>
   </div>
+  
+  <% else %>
+    <!-- Empty State -->
+    <div style="background: rgba(255,255,255,0.95); border-radius: 20px; padding: 80px 40px; text-align: center; max-width: 600px; margin: 60px auto; box-shadow: 0 10px 40px rgba(0,0,0,0.15);">
+      <div style="font-size: 100px; margin-bottom: 24px; animation: bounce 2s infinite;">
+        📝
+      </div>
+      <h2 style="font-size: 28px; font-weight: bold; color: #1f2937; margin: 0 0 16px 0;">
+        Comece a organizar suas tarefas!
+      </h2>
+      <p style="color: #6b7280; font-size: 17px; margin: 0 0 32px 0; line-height: 1.6;">
+        Você ainda não tem nenhuma lista. Crie sua primeira lista<br>
+        para começar a gerenciar suas tarefas de forma eficiente.
+      </p>
+      <%= link_to new_list_path, style: "display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px 36px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 16px; box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); transition: all 0.3s;", onmouseover: "this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 30px rgba(102, 126, 234, 0.5)'", onmouseout: "this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 20px rgba(102, 126, 234, 0.4)'" do %>
+        ✨ Criar Primeira Lista
+      <% end %>
+    </div>
+    
+    <style>
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+      }
+    </style>
+  <% end %>
 </div>

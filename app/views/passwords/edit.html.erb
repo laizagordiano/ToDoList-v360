@@ -1,0 +1,53 @@
+<div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px;">
+  <div style="width: 100%; max-width: 450px; background: white; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); padding: 40px;">
+
+    <h2 style="font-size: 28px; font-weight: bold; margin-bottom: 12px; text-align: center; color: #1f2937;">
+      Redefinir Senha
+    </h2>
+    
+    <p style="text-align: center; color: #6b7280; margin-bottom: 30px; font-size: 14px;">
+      Digite sua nova senha
+    </p>
+
+    <%= form_with url: password_path(params[:token]), method: :patch do |f| %>
+      
+      <% if @user&.errors&.any? %>
+        <div style="background: rgba(239, 68, 68, 0.1); backdrop-filter: blur(8px); border: 1px solid rgba(239, 68, 68, 0.3); color: #991b1b; padding: 16px; border-radius: 12px; margin-bottom: 24px;">
+          <p style="font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 20px;">⚠️</span>
+            Erros encontrados:
+          </p>
+          <ul style="margin-left: 28px; margin-bottom: 0; line-height: 1.6;">
+            <% @user.errors.full_messages.each do |msg| %>
+              <li style="margin-bottom: 4px;"><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div style="margin-bottom: 20px;">
+        <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;">Nova Senha</label>
+        <%= f.password_field 'user[password]', 
+              placeholder: "Digite sua nova senha",
+              required: true,
+              style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px; box-sizing: border-box;" %>
+      </div>
+
+      <div style="margin-bottom: 30px;">
+        <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;">Confirmar Nova Senha</label>
+        <%= f.password_field 'user[password_confirmation]', 
+              placeholder: "Confirme sua nova senha",
+              required: true,
+              style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px; box-sizing: border-box;" %>
+      </div>
+
+      <%= f.submit "Redefinir Senha",
+            style: "width: 100%; background-color: #2563eb; color: white; font-weight: bold; padding: 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 16px; transition: background-color 0.2s;" %>
+    <% end %>
+
+    <div style="text-align: center; margin-top: 25px;">
+      <%= link_to "← Voltar para login", new_session_path,
+            style: "color: #6b7280; text-decoration: none; font-size: 14px; transition: color 0.2s;" %>
+    </div>
+  </div>
+</div>

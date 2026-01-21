@@ -9,7 +9,7 @@
           <strong><%= @tasks.count %></strong> <%= @tasks.count == 1 ? 'tarefa' : 'tarefas' %>
           <% if @tasks.any? %>
             · <strong><%= @tasks.where(done: true).count %></strong> concluídas
-            <% overdue_count = @tasks.where("(done IS NULL OR done = ?) AND due_date < ?", false, Date.today).count %>
+            <% overdue_count = @tasks.where(done: false).where('due_date < ?', Date.today).count %>
             <% if overdue_count > 0 %>
               · <strong style="color: #fca5a5;"><%= overdue_count %></strong> atrasadas
             <% end %>
@@ -50,7 +50,6 @@
           <%= f.text_field :title, placeholder: "Digite o título da tarefa...", required: true, style: "width: 100%; border: 2px solid #e5e7eb; padding: 12px 16px; border-radius: 10px; font-size: 15px; outline: none; background: white; color: #1f2937; transition: all 0.2s; box-sizing: border-box;", onfocus: "this.style.borderColor='#667eea'", onblur: "this.style.borderColor='#e5e7eb'" %>
         </div>
         <div style="min-width: 160px;">
-          <label style="display: block; color: rgba(2, 2, 2, 0.9); font-size: 12px; margin-bottom: 4px; font-weight: 500;">📅 Data (opcional)</label>
           <%= f.date_field :due_date, style: "width: 100%; border: 2px solid #e5e7eb; padding: 12px 16px; border-radius: 10px; font-size: 14px; outline: none; background: white; transition: all 0.2s; box-sizing: border-box;", onfocus: "this.style.borderColor='#667eea'", onblur: "this.style.borderColor='#e5e7eb'" %>
         </div>
         <%= f.submit "➕ Adicionar", style: "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 28px; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; transition: all 0.3s; white-space: nowrap; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);", onmouseover: "this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(102, 126, 234, 0.5)'", onmouseout: "this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.4)'" %>

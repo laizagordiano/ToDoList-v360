@@ -5,6 +5,30 @@ class TasksController < ApplicationController
 
   def index
     @tasks = @list.tasks
+    
+    # Filtros
+    case params[:filter]
+    when 'pending'
+      @tasks = @tasks.where("done IS NULL OR done = ?", false)
+    when 'completed'
+      @tasks = @tasks.where(done: true)
+    when 'overdue'
+      @tasks = @tasks.where("(done IS NULL OR done = ?) AND due_date < ?", false, Date.today)
+    when 'today'
+      @tasks = @tasks.where("(done IS NULL OR done = ?) AND due_date = ?", false, Date.today)
+    end
+    
+    # Ordenação
+    case params[:sort]
+    when 'due_date'
+      @tasks = @tasks.order(Arel.sql('CASE WHEN due_date IS NULL THEN 1 ELSE 0 END'), due_date: :asc)
+    when 'priority'
+      @tasks = @tasks.order(priority: :desc, created_at: :desc)
+    when 'status'
+      @tasks = @tasks.order(done: :asc, created_at: :desc)
+    else
+      @tasks = @tasks.order(created_at: :desc)
+    end
   end
 
   def new
@@ -50,6 +74,6 @@ end
   end
 
   def task_params
-    params.require(:task).permit(:title, :done)
+    params.require(:task).permit(:title, :done, :due_date, :priority)
   end
 end

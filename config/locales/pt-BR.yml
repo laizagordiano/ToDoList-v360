@@ -1,0 +1,211 @@
+pt-BR:
+  # Mensagens de notificação flash
+  flashes:
+    login_success: "Login realizado com sucesso."
+    login_error: "E-mail ou senha inválidos."
+    logout_success: "Logout realizado com sucesso."
+    task_create_success: "Tarefa criada com sucesso."
+    task_update_success: "Tarefa atualizada com sucesso."
+    task_delete_success: "Tarefa excluída com sucesso."
+    list_create_success: "Lista criada com sucesso."
+    list_update_success: "Lista atualizada com sucesso."
+    list_delete_success: "Lista excluída com sucesso."
+    user_create_success: "Conta criada com sucesso!"
+    access_denied: "Você precisa estar logado para acessar esta página."
+    generic_success: "Operação realizada com sucesso."
+    generic_error: "Ocorreu um erro. Tente novamente."
+  
+  # Sessões / Login
+  sessions:
+    new:
+      title: "Entrar na Conta"
+      email_label: "Email"
+      password_label: "Senha"
+      submit_button: "Entrar"
+      forgot_password: "Esqueceu a senha?"
+      recover_link: "Recuperar"
+      no_account: "Não tem conta?"
+      register_link: "Registrar"
+      email_placeholder: "seu@email.com"
+      password_placeholder: "Digite sua senha"
+  
+  # Usuários / Registro
+  users:
+    new:
+      title: "Criar Conta"
+      name_label: "Nome"
+      email_label: "Email"
+      password_label: "Senha"
+      password_confirmation_label: "Confirmar Senha"
+      submit_button: "Registrar"
+      have_account: "Já tem conta?"
+      login_link: "Entrar aqui"
+      name_placeholder: "Seu nome completo"
+      email_placeholder: "seu@email.com"
+      password_placeholder: "Digite sua senha"
+      password_confirmation_placeholder: "Confirme sua senha"
+      errors_found: "Erros encontrados:"
+  
+  # Recuperação de senha
+  passwords:
+    new:
+      title: "Recuperar Senha"
+      email_label: "Email"
+      email_placeholder: "seu@email.com"
+      submit_button: "Enviar instruções"
+      back_to_login: "← Voltar para login"
+      description: "Digite seu email para receber instruções de recuperação"
+    create:
+      success: "Se o email estiver cadastrado, você receberá instruções para redefinir sua senha."
+    edit:
+      title: "Redefinir Senha"
+      new_password_label: "Nova Senha"
+      new_password_placeholder: "Digite sua nova senha"
+      confirm_password_label: "Confirmar Nova Senha"
+      confirm_password_placeholder: "Confirme sua nova senha"
+      submit_button: "Redefinir Senha"
+      back_to_login: "← Voltar para login"
+      invalid_token: "Link de recuperação inválido ou expirado. Por favor, solicite um novo."
+      description: "Digite sua nova senha"
+    update:
+      success: "Senha redefinida com sucesso! Você já pode fazer login."
+      error: "Erro ao redefinir senha. Verifique os campos."
+  
+  # Listas
+  lists:
+    index:
+      title: "Minhas Listas"
+      task_count:
+        one: "tarefa"
+        other: "tarefas"
+      no_tasks: "Nenhuma tarefa"
+      tasks_button: "📋 Tarefas"
+      edit_button: "✏️ Editar"
+      delete_button: "🗑️ Deletar"
+      delete_confirm: "Tem certeza que quer deletar esta lista?"
+      add_list: "➕ Adicionar Lista"
+    new:
+      title: "Nova Lista"
+    edit:
+      title: "Editar Lista"
+    form:
+      title_label: "📋 Título da Lista"
+      title_placeholder: "Digite o título"
+      description_label: "💬 Descrição (opcional)"
+      description_placeholder: "Adicione uma descrição para esta lista..."
+      description_helper: "A descrição aparecerá na página de tarefas"
+      create_button: "➕ Criar Lista"
+      update_button: "💾 Salvar Alterações"
+      cancel_button: "❌ Cancelar"
+      errors_title: "Ops! Verifique os seguintes campos:"
+      title_required: "O título da lista é obrigatório"
+    show:
+      back_button: "← Voltar para Listas"
+      tasks_title: "Tarefas de"
+      no_tasks: "Nenhuma tarefa nesta lista ainda."
+      add_task: "➕ Adicionar Tarefa"
+  
+  # Tarefas
+  tasks:
+    index:
+      title: "Tarefas de"
+      back_button: "← Voltar para Listas"
+      no_tasks: "Nenhuma tarefa nesta lista ainda."
+      add_task: "➕ Adicionar Tarefa"
+      edit_button: "✏️"
+      delete_button: "🗑️"
+      delete_confirm: "Tem certeza que quer deletar esta tarefa?"
+      completed_badge: "✓ Concluída"
+      pending_badge: "⏳ Pendente"
+    new:
+      title: "Nova Tarefa"
+    edit:
+      title: "Editar Tarefa"
+    form:
+      title_label: "✍️ Título da Tarefa"
+      title_placeholder: "Digite o título da tarefa..."
+      done_label: "✓ Marcar como concluída"
+      create_button: "➕ Criar Tarefa"
+      update_button: "💾 Salvar Alterações"
+      cancel_button: "❌ Cancelar"
+      errors_title: "Ops! Verifique os seguintes campos:"
+      title_required: "O título da tarefa é obrigatório"
+  
+  # Password Reset
+  password_resets:
+    new:
+      title: "Recuperar Senha"
+      email_label: "Email"
+      email_placeholder: "seu@email.com"
+      submit_button: "Enviar instruções"
+      back_to_login: "Voltar para login"
+  
+  # Página Home
+  pages:
+    home:
+      welcome: "Bem-vindo ao"
+      subtitle: "Organize suas tarefas de forma simples e eficiente"
+      get_started: "Começar Agora"
+      login: "Já tem conta? Entrar"
+  
+  # Layout / Navegação
+  layouts:
+    application:
+      logout_button: "Sair"
+      login_button: "Entrar"
+      register_button: "Criar Conta"
+  
+  # Mailer
+  mailer:
+    welcome_subject: "Bem-vindo ao TaskPoint!"
+    welcome_greeting: "Olá %{name},"
+    welcome_message: "Obrigado por se registrar no TaskPoint. Estamos felizes em tê-lo conosco!"        
+    welcome_closing: "Atenciosamente, Equipe TaskPoint"
+  
+  # Toast notifications
+  toast:
+    close: "Fechar"
+
+  # ActiveRecord errors
+  activerecord:
+    errors:
+      messages:
+        blank: "não pode ficar em branco"
+        invalid: "é inválido"
+        taken: "já está em uso"
+        too_short: "é muito curto (mínimo: %{count} caracteres)"
+        confirmation: "não é igual a %{attribute}"
+      models:
+        user:
+          attributes:
+            name:
+              blank: "não pode ficar em branco"
+            email:
+              blank: "não pode ficar em branco"
+              invalid: "formato inválido"
+              taken: "já está em uso"
+            password:
+              blank: "não pode ficar em branco"
+              too_short: "muito curta (mínimo 6 caracteres)"
+            password_confirmation:
+              confirmation: "não confere com a senha"
+        list:
+          attributes:
+            title:
+              blank: "não pode ficar em branco"
+        task:
+          attributes:
+            title:
+              blank: "não pode ficar em branco"
+    attributes:
+      user:
+        name: "Nome"
+        email: "Email"
+        password: "Senha"
+        password_confirmation: "Confirmação de senha"
+      list:
+        title: "Título"
+        description: "Descrição"
+      task:
+        title: "Título"
+        done: "Concluída"
