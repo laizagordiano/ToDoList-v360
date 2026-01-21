@@ -9,11 +9,11 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     
     if @user.save
-      # Envio síncrono de email via API HTTP do Postmark (não usa ActiveJob, SMTP ou deliver_later)
+      # Envio síncrono de email via API HTTP do Brevo (não usa ActiveJob, SMTP ou deliver_later)
       begin
-        PostmarkService.send_welcome_email(@user, self)
+        BrevoService.send_welcome_email(@user, self)
       rescue => e
-        Rails.logger.error("❌ Erro ao enviar email de boas-vindas via Postmark API: #{e.message}")
+        Rails.logger.error("❌ Erro ao enviar email de boas-vindas via Brevo API: #{e.message}")
         # Continua mesmo se o email falhar, pois o usuário já foi criado
       end
       
