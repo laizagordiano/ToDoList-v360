@@ -2,33 +2,22 @@
   <div style="background: white; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); padding: 40px;">
 
     <%= form_with(model: @list) do |f| %>
-      
-      <% if @list.errors.any? %>
-        <div style="background-color: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-          <p style="font-weight: 600; margin-bottom: 10px;">Erros encontrados:</p>
-          <ul style="margin-left: 20px; margin-bottom: 0;">
-            <% @list.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
 
       <!-- Campo Título -->
       <div style="margin-bottom: 20px;">
-        <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;">📋 Título da Lista</label>
-        <%= f.text_field :title, placeholder: "Digite o título", style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px; box-sizing: border-box;" %>
+        <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;"><%= t('lists.form.title_label') %></label>
+        <%= f.text_field :title, placeholder: t('lists.form.title_placeholder'), style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px; box-sizing: border-box;" %>
       </div>
 
       <!-- Campo Descrição -->
       <div style="margin-bottom: 30px;">
-        <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;">💬 Descrição (opcional)</label>
-        <%= f.text_area :description, placeholder: "Adicione uma descrição para esta lista...", style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px; box-sizing: border-box; font-family: inherit; resize: vertical; min-height: 100px;" %>
-        <p style="color: #9ca3af; font-size: 12px; margin: 5px 0 0 0;">A descrição aparecerá na página de tarefas</p>
+        <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;"><%= t('lists.form.description_label') %></label>
+        <%= f.text_area :description, placeholder: t('lists.form.description_placeholder'), style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 10px 12px; font-size: 14px; box-sizing: border-box; font-family: inherit; resize: vertical; min-height: 100px;" %>
+        <p style="color: #9ca3af; font-size: 12px; margin: 5px 0 0 0;"><%= t('lists.form.description_helper') %></p>
       </div>
 
       <!-- Botão Submit -->
-      <%= f.submit @list.new_record? ? "✨ Criar Lista" : "💾 Salvar Alterações", style: "width: 100%; background-color: #2563eb; color: white; font-weight: bold; padding: 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 16px; transition: background-color 0.2s;" %>
+      <%= f.submit @list.new_record? ? t('lists.form.create_button') : t('lists.form.update_button'), style: "width: 100%; background-color: #2563eb; color: white; font-weight: bold; padding: 12px; border-radius: 8px; border: none; cursor: pointer; font-size: 16px; transition: background-color 0.2s;" %>
     <% end %>
 
   </div>

@@ -1,29 +1,23 @@
 <%= form_with(model: [@list, task]) do |f| %>
-  <% if task.errors.any? %>
-    <div style="background-color: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-      <p style="font-weight: 600; margin-bottom: 10px;">⚠️ Erros encontrados:</p>
-      <ul style="margin-left: 20px; margin-bottom: 0;">
-        <% task.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
 
   <div style="margin-bottom: 24px;">
-    <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;">✍️ Título da Tarefa</label>
-    <%= f.text_field :title, placeholder: "Digite o título da tarefa...", style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 12px 14px; font-size: 16px; box-sizing: border-box; transition: border-color 0.2s;" %>
+    <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;"><%= t('tasks.form.title_label') %></label>
+    <%= f.text_field :title, placeholder: t('tasks.form.title_placeholder'), style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 12px 14px; font-size: 16px; box-sizing: border-box; transition: border-color 0.2s;" %>
+  </div>
+
+  <div style="margin-bottom: 24px;">
+    <label style="display: block; color: #374151; font-weight: 600; margin-bottom: 8px;">📅 Data de Vencimento <span style="color: #9ca3af; font-weight: 400; font-size: 14px;">(opcional)</span></label>
+    <%= f.date_field :due_date, style: "width: 100%; border: 1px solid #d1d5db; border-radius: 8px; padding: 12px 14px; font-size: 16px; box-sizing: border-box; transition: border-color 0.2s;" %>
   </div>
 
   <div style="margin-bottom: 30px; padding: 16px; background: linear-gradient(135deg, #f0fdf4 0%, #f0fef9 100%); border: 1px solid #bbf7d0; border-radius: 8px; display: flex; align-items: center; gap: 12px;">
     <%= f.check_box :done, { style: "width: 22px; height: 22px; cursor: pointer; accent-color: #10b981;" } %>
-    <%= f.label :done, "✓ Marcar como concluída", style: "cursor: pointer; color: #166534; font-weight: 600; margin: 0; flex: 1;" %>
+    <%= f.label :done, t('tasks.form.done_label'), style: "cursor: pointer; color: #166534; font-weight: 600; margin: 0; flex: 1;" %>
   </div>
 
   <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-    <%= f.submit task.new_record? ? "➕ Criar Tarefa" : "💾 Salvar Alterações", style: "flex: 1; min-width: 150px; background-color: #2563eb; color: white; font-weight: bold; padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer; font-size: 16px; transition: background-color 0.2s;" %>
-    <%= link_to "❌ Cancelar", @list, style: "flex: 0 1 auto; background-color: #e5e7eb; color: #374151; font-weight: 600; padding: 12px 24px; border-radius: 8px; text-decoration: none; text-align: center; border: none; cursor: pointer; font-size: 16px; transition: background-color 0.2s;" %>
+    <%= f.submit task.new_record? ? t('tasks.form.create_button') : t('tasks.form.update_button'), style: "flex: 1; min-width: 150px; background-color: #2563eb; color: white; font-weight: bold; padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer; font-size: 16px; transition: background-color 0.2s;" %>
+    <%= link_to t('tasks.form.cancel_button'), @list, style: "flex: 0 1 auto; background-color: #e5e7eb; color: #374151; font-weight: 600; padding: 12px 24px; border-radius: 8px; text-decoration: none; text-align: center; border: none; cursor: pointer; font-size: 16px; transition: background-color 0.2s;" %>
   </div>
 
 <% end %>
