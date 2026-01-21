@@ -7,21 +7,21 @@ class PasswordsController < ApplicationController
 
   # POST /passwords - Envia email com link de reset
   def create
-    @user = User.find_by(email: params[:email].downcase)
+    @user = User.find_by(email: params[:email]&.downcase)
     
     if @user
       @user.generate_password_reset_token!
       
       begin
         BrevoService.send_password_reset_email(@user, self)
-        flash[:notice] = t('passwords.create.success')
+        flash[:notice] = "📧 Verifique seu email! Enviamos as instruções para redefinir sua senha."
       rescue => e
         Rails.logger.error("Erro ao enviar email de reset: #{e.message}")
-        flash[:notice] = t('passwords.create.success') # Não revelar se email existe
+        flash[:notice] = "📧 Verifique seu email! Enviamos as instruções para redefinir sua senha." # Não revelar se email existe
       end
     else
       # Não revela se o email existe ou não (segurança)
-      flash[:notice] = t('passwords.create.success')
+      flash[:notice] = "📧 Verifique seu email! Enviamos as instruções para redefinir sua senha."
     end
     
     redirect_to new_session_path
