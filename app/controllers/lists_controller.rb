@@ -5,6 +5,11 @@ class ListsController < ApplicationController
   def index
     #Busca todas as listas do usuário atual
     @lists = current_user.lists
+    
+    # Filtra por busca se o parâmetro estiver presente
+    if params[:search].present?
+      @lists = @lists.where("title ILIKE ?", "%#{params[:search]}%")
+    end
   end
 
   def show
