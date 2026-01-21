@@ -62,6 +62,55 @@ class BrevoService
       send_email(payload)
     end
 
+    # Envia e-mail de recuperação de senha
+    # @param user [User] Usuário que receberá o e-mail
+    # @param controller_context [ActionController::Base] Contexto do controller para renderizar templates
+    # @return [Hash] Resposta da API do Brevo
+    def send_password_reset_email(user, controller_context)
+      # Em desenvolvimento, apenas loga sem enviar email real
+      if Rails.env.development?
+        reset_url = controller_context.edit_password_url(user.reset_password_token)
+        Rails.logger.info("📧 [DEV] Email de recuperação de senha para: #{user.email}")
+        Rails.logger.info("📧 [DEV] Link de reset: #{reset_url}")
+        return { message: 'Email simulado em development', to: user.email, reset_url: reset_url }
+      end
+
+      reset_url = controller_context.edit_password_url(user.reset_password_token)
+
+      # Renderiza o template HTML usando o contexto do controller
+      html_body = controller_context.render_to_string(
+        template: 'user_mailer/password_reset_email',
+        layout: 'mailer',
+        locals: { user: user },
+        assigns: { user: user, reset_url: reset_url }
+      )
+
+      # Versão texto simples
+      text_body = controller_context.render_to_string(
+        template: 'user_mailer/password_reset_email.text',
+        locals: { user: user },
+        assigns: { user: user, reset_url: reset_url }
+      )
+
+      payload = {
+        sender: {
+          name: sender_name,
+          email: sender_email
+        },
+        to: [
+          {
+            email: user.email,
+            name: user.name
+          }
+        ],
+        subject: '🔐 Recuperação de Senha - TaskPoint',
+        htmlContent: html_body,
+        textContent: text_body
+      }
+
+      send_email(payload)
+    end
+
     # Envia requisição HTTP POST para API do Brevo
     # @param payload [Hash] Dados do e-mail no formato JSON
     # @return [Hash] Resposta da API
