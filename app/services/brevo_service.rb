@@ -81,13 +81,15 @@ class BrevoService
       html_body = controller_context.render_to_string(
         template: 'user_mailer/password_reset_email',
         layout: 'mailer',
+        formats: [:html],
         locals: { user: user },
         assigns: { user: user, reset_url: reset_url }
       )
 
       # Versão texto simples
       text_body = controller_context.render_to_string(
-        template: 'user_mailer/password_reset_email.text',
+        template: 'user_mailer/password_reset_email',
+        formats: [:text],
         locals: { user: user },
         assigns: { user: user, reset_url: reset_url }
       )
