@@ -1,13 +1,13 @@
 class UserMailer < ApplicationMailer
-  default from: 'noreply@taskpoint.com'
+  default from: ENV["POSTMARK_SENDER_EMAIL"]
 
   def welcome_email(user)
     @user = user
     @login_url = root_url
-    
+
     mail(
       to: @user.email,
-      subject: 'Welcome to TaskPoint! 🎉'
+      subject: "Bem-vindo ao TaskPoint! 🎉"
     )
   end
 
@@ -15,6 +15,10 @@ class UserMailer < ApplicationMailer
     @user = user
     @token = user.reset_password_token
     @reset_url = edit_password_url(token: @token)
-    mail(to: @user.email, subject: "Redefina sua senha")
+
+    mail(
+      to: @user.email,
+      subject: "Redefina sua senha"
+    )
   end
 end
